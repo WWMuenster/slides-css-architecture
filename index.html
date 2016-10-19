@@ -1,0 +1,317 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>CSS Architecture: OOCSS & BEM</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section>
+					<h1>CSS Architecture</h1>
+					<h2>OOCSS & BEM</h2>
+				</section>
+
+				<section>
+
+					<section>
+						<h2>CSS Pains</h2>
+					</section>
+
+					<section>
+						<h2>Code is fragile</h2>
+						<p>Even the cleanest code is easily ruined by the first non-expert that edits it.</p>
+					</section>
+
+					<section>
+						<h2>Dependencies are hidden</h2>
+						<p>Changing something can have unforseeable effects (coupling to location, containers).</p>
+					</section>
+
+					<section>
+						<h2>Code is duplicated, not reused</h2>
+						<p>If it is hard to understand existing code, duplication looks like the easy way out.</p>
+					</section>
+
+					<section>
+						<h2>Stale rules</h2>
+						<p>If it is hard to understand existing code, deleting something seems impossible.</p>
+					</section>
+
+					<section>
+						<h2>Specificity wars<span class="fragment" style="font-family: monospace; font-weight: 400; text-transform: none;">!important</span></h2>
+						<img class="fragment" src="img/specificity.png" alt="Specificity wars illustration with Empire forces">
+					</section>
+
+				</section>
+
+				<section>
+
+					<section>
+						<h2>CSS language lacks structure. Let's add it by convention!</h2>
+					</section>
+
+					<section data-transition="fade-out">
+						<img src="img/architecture1.png" alt="Until now we focused on style definitions…">
+					</section>
+
+					<section data-transition="fade-in">
+						<img src="img/architecture2.png" alt="…but the architecture lives in selectors.">
+					</section>
+
+				</section>
+
+				<section>
+
+					<section>
+						<h2>OOCSS: Object Oriented CSS</h2>
+					</section>
+
+					<section>
+						<h2>Start thinking in CSS objects</h2>
+						<blockquote>
+							<p>Basically, a CSS “object” is a repeating visual pattern, that can be abstracted into an independent snippet of HTML, CSS, and possibly JavaScript. That object can then be reused throughout a site.</p>
+							<cite><a href="https://github.com/stubbornella/oocss/wiki#whats-a-css-object">@stubbornella</a></cite>
+						</blockquote>
+					</section>
+
+					<section>
+						<h2>Each CSS class has a single responsibility</h2>
+					</section>
+
+					<section>
+						<h2>Keep the structure and skin separate</h2>
+					</section>
+
+					<section>
+						<h3>From:</h3>
+<pre><code>
+#object {
+  width: 500px;
+  min-height: 200px;
+  overflow: auto;
+  border: solid 1px #ccc;
+  background: linear-gradient(#ccc, #222);
+  box-shadow: rgba(0, 0, 0, .5) 2px 2px 5px;
+}
+</code></pre>
+					</section>
+
+					<section>
+						<h3>To:</h3>
+<pre><code>
+.object {
+  width: 500px;
+  min-height: 200px;
+  overflow: auto;
+}
+
+.skin {
+  border: solid 1px #ccc;
+  background: linear-gradient(#ccc, #222);
+  box-shadow: rgba(0, 0, 0, .5) 2px 2px 5px;
+}
+</code></pre>
+					</section>
+
+					<section>
+						<ul>
+							<li>Find patterns, enable reuse</li>
+							<li class="fragment">„Do I need another object or can I get it done with just another skin? Do I need to write CSS at all?“</li>
+							<li class="fragment">Less code</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Separate container and content</h2>
+					</section>
+
+					<section>
+						<h3>From:</h3>
+<pre><code>
+ul li.list-item {
+	// foo
+}
+</code></pre>
+					</section>
+
+					<section>
+						<h3>To:</h3>
+<pre><code>
+.list-item {
+	// foo
+}
+</code></pre>
+					</section>
+
+					<section>
+						<ul>
+							<li>Stop fighting the cascade</li>
+							<li class="fragment">Easily change, move and reuse objects</li>
+						</ul>
+					</section>
+
+				</section>
+
+				<section>
+
+					<section>
+						<h2>BEM: Block, Element, Modifier</h2>
+					</section>
+
+					<section>
+<pre><code>
+// A block is a Standalone entity
+// that is meaningful on its own.
+.block {}
+
+// A block element helps form a block
+// that has no meaning on it's own.
+.block__element {}
+
+// A block modifier is a flag that
+// can alter the appearance or behavior of a block.
+.block--modifier {}
+</code></pre>
+					</section>
+
+					<section>
+						<h2>Let's build a car!</h2>
+<pre><code>
+.car {}
+.car__door {}
+.car--electric {}
+.car--electric__door {}
+.car__door--gullwing {}
+</code></pre>
+						<img src="img/car.gif" alt="Holy shit!" class="fragment">
+					</section>
+
+					<section>
+						<h3>From:</h3>
+<pre><code>
+<form class="site-search  full">
+	<input type="text" class="field">
+	<input type="Submit" value ="Search" class="button">
+</form>
+</code></pre>
+<pre><code>
+.site-search {}
+.site-search .field {}
+.site-search .button {}
+.site-search.full {}
+</code></pre>
+					</section>
+
+					<section>
+						<h3>To:</h3>
+<pre><code>
+<form class="site-search  site-search--full">
+	<input type="text" class="site-search__field">
+	<input type="Submit" value ="Search" class="site-search__button">
+</form>
+</code></pre>
+<pre><code>
+.site-search {} /* Block */
+.site-search__field {} /* Element */
+.site-search__button {} /* Element */
+.site-search--full {} /* Modifier */
+</code></pre>
+				</section>
+
+					<section>
+						<ul>
+							<li>Components are modular</li>
+							<li class="fragment">Selectors have a scope (namespace)</li>
+							<li class="fragment">Easily see dependencies of elements</li>
+							<li class="fragment">Teams develop a common language to talk about elements</li>
+							<li class="fragment">Specificity war is over</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>But wait!</h2>
+						<img class="fragment" src="img/mess.gif" alt="Mess">
+						<blockquote class="fragment">„My HTML looks all bloated and messy with BEM!“</blockquote>
+					</section>
+
+					<section>
+						<p>To write understandable, modular CSS, you <em>need to get around inheritance</em>.</p>
+						<p class="fragment">Until CSS natively supports scope, you have to give each element a unique classname, to control inheritance.</p>
+						<p class="fragment">And: bloat is gzipped away.</p>
+					</section>
+
+					<section>
+						<h2>Use your own style convention if it makes you feel better</h2>
+<code><pre>
+.block {}
+.block-element {}
+.block--modifier {}
+.camelCase-allThe--selectorThings {}
+</pre></code>
+					</section>
+
+				</section>
+
+				<section>
+
+					<section>
+						<h2>What about the big picture?</h2>
+						<p class="fragment">Let's look at <a href="https://smacss.com/">SMACSS</a> & <a href="https://speakerdeck.com/dafed/managing-css-projects-with-itcss">ITCSS</a>.</p>
+					</section>
+
+				</section>
+				
+				<section>
+					<h2>Links</h2>
+					<ul>
+						<li><a href="http://www.slideshare.net/stubbornella/css-bloat">Nicole Sullivan on CSS Bloat</a></li>
+						<li><a href="https://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/">Smashing Magazine: Introduction to OOCSS</a></li>
+						<li><a href="http://www.slideshare.net/stubbornella/object-oriented-css/">Nicole Sullivan on OOCSS</a></li>
+						<li><a href="http://getbem.com/">BEM Website</a></li>
+						<li><a href="https://en.bem.info/methodology/">BEM Methodology</a></li>
+						<li><a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">CSSWizardry: MindBEMding – Getting your head round BEM syntax</a></li>
+						<li><a href="https://css-tricks.com/bem-101/">CSS Tricks: BEM 101</a></li>
+					</ul>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
